@@ -95,12 +95,16 @@ vim.pack.add {
   'https://github.com/nvim-tree/nvim-web-devicons',
   'https://github.com/nvim-lualine/lualine.nvim',
 }
+vim.opt.laststatus = 0
 require('lualine').setup {
   options = {
     section_separators = { left = '\u{e0d2}\u{e0ce}', right = '\u{e0d4}' },
     component_separators = { left = '\u{e0cf}', right = '\u{e0b3}' },
   },
-  sections = {
+  sections = {},
+  inactive_sections = {},
+  tabline = {},
+  winbar = {
     lualine_a = { { 'mode', separator = { left = '\u{e0d4}', right = '\u{e0d2}\u{e0ce}' }, padding = { left = 2, right = 1 } } },
     lualine_b = { { 'filename', padding = { left = 2, right = 1 }, path = 3, shorting_target = 100 } },
     lualine_c = { { 'branch', padding = { left = 2, right = 1 } }, { 'diff', padding = { left = 2, right = 1 } }, { 'diagnostics', padding = { left = 2 } } },
@@ -108,7 +112,7 @@ require('lualine').setup {
     lualine_y = { 'progress' },
     lualine_z = { 'location' },
   },
-  inactive_sections = {
+  inactive_winbar = {
     lualine_a = {},
     lualine_b = {},
     lualine_c = { 'filename' },
@@ -116,9 +120,6 @@ require('lualine').setup {
     lualine_y = {},
     lualine_z = {},
   },
-  tabline = {},
-  winbar = {},
-  inactive_winbar = {},
   extensions = {},
 }
 
