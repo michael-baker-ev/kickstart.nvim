@@ -5,6 +5,9 @@ vim.keymap.set('n', '<leader>ps', function() persistence.load() end)
 vim.keymap.set('n', '<leader>pS', function() persistence.select() end)
 vim.keymap.set('n', '<leader>pl', function() persistence.load { last = true } end)
 vim.keymap.set('n', '<leader>pd', function() persistence.stop() end)
+require('which-key').add {
+  { '<leader>p', group = '[P]ersistence-nvim', mode = { 'n' } },
+}
 
 local starter = require 'mini.starter'
 
@@ -94,27 +97,38 @@ vim.pack.add {
 }
 require('lualine').setup {
   options = {
-    section_separators = { left = '', right = '' },
-    component_separators = { left = '', right = '' },
-    sections = {
-      lualine_a = { { 'mode', separator = { left = '' }, right_padding = 2 } },
-      lualine_b = { 'branch', 'diff', 'diagnostics' },
-      lualine_c = { 'filename' },
-      lualine_x = { 'encoding', 'fileformat', 'filetype' },
-      lualine_y = { 'progress' },
-      lualine_z = { 'location' },
-    },
-    inactive_sections = {
-      lualine_a = {},
-      lualine_b = {},
-      lualine_c = { 'filename' },
-      lualine_x = { 'location' },
-      lualine_y = {},
-      lualine_z = {},
-    },
-    tabline = {},
-    winbar = {},
-    inactive_winbar = {},
-    extensions = {},
+    section_separators = { left = '\u{e0d2}\u{e0ce}', right = '\u{e0d4}' },
+    component_separators = { left = '\u{e0cf}', right = '\u{e0b3}' },
   },
+  sections = {
+    lualine_a = { { 'mode', separator = { left = '\u{e0d4}', right = '\u{e0d2}\u{e0ce}' }, padding = { left = 2, right = 1 } } },
+    lualine_b = { { 'filename', padding = { left = 2, right = 1 }, path = 3, shorting_target = 100 } },
+    lualine_c = { { 'branch', padding = { left = 2, right = 1 } }, { 'diff', padding = { left = 2, right = 1 } }, { 'diagnostics', padding = { left = 2 } } },
+    lualine_x = { 'encoding', 'fileformat', 'filetype' },
+    lualine_y = { 'progress' },
+    lualine_z = { 'location' },
+  },
+  inactive_sections = {
+    lualine_a = {},
+    lualine_b = {},
+    lualine_c = { 'filename' },
+    lualine_x = { 'location' },
+    lualine_y = {},
+    lualine_z = {},
+  },
+  tabline = {},
+  winbar = {},
+  inactive_winbar = {},
+  extensions = {},
 }
+
+-- --- Cursor smear
+-- vim.pack.add {
+--   'https://github.com/sphamba/smear-cursor.nvim',
+-- }
+--
+-- require('smear_cursor').setup {
+--   opts = {
+--     cursor_color = '#ff4000',
+--   },
+-- }

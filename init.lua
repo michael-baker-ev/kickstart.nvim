@@ -86,6 +86,8 @@ do
   -- See `:help 'confirm'`
   vim.o.confirm = true
   vim.opt.wrap = false
+  vim.o.winborder = 'rounded'
+  vim.opt.clipboard = 'unnamedplus'
 end
 
 -- ============================================================
@@ -321,7 +323,7 @@ do
   vim.pack.add { gh 'folke/which-key.nvim' }
   require('which-key').setup {
     -- Delay between pressing a key and opening which-key (milliseconds)
-    preset="helix",
+    preset = 'helix',
     delay = 0,
     icons = { mappings = vim.g.have_nerd_font },
     -- Document existing key chains
@@ -330,6 +332,7 @@ do
       { '<leader>t', group = '[T]oggle' },
       { '<leader>h', group = 'Git [H]unk', mode = { 'n', 'v' } }, -- Enable gitsigns recommended keymaps first
       { 'gr', group = 'LSP Actions', mode = { 'n' } },
+      { '<leader>w', group = 'windows', proxy = '<c-w>', mode = { 'n' } },
     },
   }
 
@@ -386,7 +389,23 @@ do
   -- - (saiw)) - [S]urround [A]dd [I]nner [W]ord [)]Paren
   -- - sd'   - [S]urround [D]elete [']quotes
   -- - sr)'  - [S]urround [R]eplace [)] [']
-  require('mini.surround').setup()
+  require('mini.surround').setup {
+    mappings = {
+      add = '<leader>msa', -- Add surrounding in Normal and Visual modes
+      delete = '<leader>msd', -- Delete surrounding
+      find = '<leader>msf', -- Find surrounding (to the right)
+      find_left = '<leader>msF', -- Find surrounding (to the left)
+      highlight = '<leader>msh', -- Highlight surrounding
+      replace = '<leader>msr', -- Replace surrounding
+      --
+      -- suffix_last = '<leader>ml', -- Suffix to search with "prev" method
+      -- suffix_next = '<leader>mn', -- Suffix to search with "next" method
+    },
+  }
+  require('which-key').add {
+    { '<leader>ms', group = '[M]ini-[S]urround', mode = { 'n', 'v' } },
+    { '<leader>m', group = '[M]ini', mode = { 'n', 'v' } },
+  }
 
   -- Simple and easy statusline.
   --  You could remove this setup call if you don't like it,
@@ -652,6 +671,8 @@ do
     -- gopls = {},
     -- pyright = {},
     -- tsc = {},
+    ty = {},
+    ruff = {},
     --
     -- Some languages (like rust) have entire language plugins that can be useful:
     --    https://github.com/mrcjkb/rustaceanvim
@@ -757,7 +778,14 @@ do
     formatters_by_ft = {
       -- rust = { 'rustfmt' },
       -- Conform can also run multiple formatters sequentially
-      -- python = { "isort", "black" },
+      python = {
+        -- To fix auto-fixable lint errors.
+        'ruff_fix',
+        -- To organize the imports.
+        'ruff_organize_imports',
+        -- To run the Ruff formatter.
+        'ruff_format',
+      },
       --
       -- You can use 'stop_after_first' to run the first available formatter from the list
       -- javascript = { "prettierd", "prettier", stop_after_first = true },
@@ -811,7 +839,7 @@ do
       -- <c-k>: Toggle signature help
       --
       -- See `:help blink-cmp-config-keymap` for defining your own keymap
-      preset = 'default',
+      preset = 'super-tab',
 
       -- For more advanced Luasnip keymaps (e.g. selecting choice nodes, expansion) see:
       --    https://github.com/L3MON4D3/LuaSnip?tab=readme-ov-file#keymaps
@@ -842,7 +870,7 @@ do
     -- the rust implementation via `'prefer_rust_with_warning'`
     --
     -- See `:help blink-cmp-config-fuzzy` for more information
-    fuzzy = { implementation = 'lua' },
+    fuzzy = { implementation = 'prefer_rust_with_warning' },
 
     -- Shows a signature help window while you type arguments for a function
     signature = { enabled = true },
@@ -950,6 +978,6 @@ do
   -- require 'custom.plugins.git'
 end
 
-vim.cmd.colorscheme 'dracula'
+vim.cmd.colorscheme 'miniblue'
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
